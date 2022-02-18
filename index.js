@@ -2,12 +2,27 @@
 const fs = require('fs');
 const inquirer = require('inquirer');
 const validate = require('./utils/validateInput');
+const generateMarkdown = require('./utils/generateMarkdown');
 
-// TODO: Create an array of questions for user input
+// const mockData = {
+//     title: 'Run Buddy',
+//     description: 'A website where you can find people to run with.',
+//     installationCommand: '',
+//     installation: 'Run the npm command',
+//     usageCommand: 'node index',
+//     usage: 'Use the node command to start the app',
+//     confirmScreenshot: true,
+//     license: 'MIT',
+//     contributing: 'Fork the repo and make a PR',
+//     tests: 'Run the node command and look at it',
+//     username: 'johnnyboy7781',
+//     email: 'john@yahoo.com'
+//   }
+
 const questions = [
     {
         type: 'input',
-        name: 'name',
+        name: 'title',
         message: 'What is the name of your project: (Required)',
         validate: input => validate(input)
     },
@@ -19,7 +34,7 @@ const questions = [
     },
     {
         type: 'input',
-        name: 'installation-command',
+        name: 'installationCommand',
         message: 'What command installs your app: ',
     },
     {
@@ -30,7 +45,7 @@ const questions = [
     },
     {
         type: 'input',
-        name: 'usage-command',
+        name: 'usageCommand',
         message: 'What command runs your app: ',
     },
     {
@@ -43,31 +58,18 @@ const questions = [
         type: 'confirm',
         name: 'confirmScreenshot',
         message: 'Would you like to include a screenshot?',
-        default: false
-    },
-    {
-        type: 'input',
-        name: 'screenshot',
-        message: 'Please provide the relative path to your screenshot with its filename: ',
-        when: ({ confirmScreenshot }) => {
-            if (confirmScreenshot) {
-                return true;
-            } else {
-                return false;
-            }
-        },
-        validate: input => validate(input, 'screenshot')
+        default: false,
     },
     {
         type: 'list',
         name: 'license',
         message: 'Which license are you using? (Required)',
-        choices: ["No license", "MIT (Most common)", "GPLv2", "GPLv3", "Apache", "BSD 2-clause", "BSD 3-clause", "LGPLv3", "AGPLv3"]
+        choices: ["No license", "MIT", "GPLv2", "GPLv3", "Apache", "BSD 2-clause", "BSD 3-clause", "LGPLv3", "AGPLv3"]
     },
     {
         type: 'input',
-        name: 'contributors',
-        message: "Please list the contributors: (Required)",
+        name: 'contributing',
+        message: "Please describe how someone can contribute to this repo: (Required)",
         validate: input => validate(input)
     },
     {
@@ -90,10 +92,12 @@ const questions = [
 
 ];
 
-// TODO: Create a function to write README file
-function writeToFile(fileName, data) {}
+function writeToFile(fileName, data) {
+    fs.writeFile(`./dist/${fileName}`, generateMarkdown(data), err => {
+        if (err) console.log(err);
+    })
+}
 
-// TODO: Create a function to initialize app
 function init() {
     console.log(
         '\n================================\n' +
@@ -104,16 +108,4 @@ function init() {
     return inquirer.prompt(questions);
 }
 
-// Function call to initialize app
-init();
-
-// Sections
-/* Title
-   Description
-   ToC
-   Installation
-   Usage
-   License
-   Contributing
-   Tests
-   Questions */
+init().then(answers => writeToFile('README.md', answers));
