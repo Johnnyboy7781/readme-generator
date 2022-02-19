@@ -112,7 +112,7 @@ const renderTestSection = test => {
     return ``;
   } else {
     return `
-# Tests
+## Tests
 ${test}
     `
   }
