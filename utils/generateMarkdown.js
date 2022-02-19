@@ -1,4 +1,4 @@
-function renderLicenseBadge(license) {
+function renderLicenseBadge(license) { // Apply the right license badge
   if (license === "No license") {
     return "";
   } else if (license === "MIT") {
@@ -20,7 +20,7 @@ function renderLicenseBadge(license) {
   }
 }
 
-function renderLicenseLink(license) {
+function renderLicenseLink(license) { // Apply the right license link
   if (license === "No license") {
     return "";
   } else if (license === "MIT") {
@@ -43,8 +43,10 @@ function renderLicenseLink(license) {
 }
 
 function renderLicenseSection(license) {
-  if (license === "No license") return "";
-  return `
+  if (license === "No license") return ""; // If no license, omit license section
+
+  // Otherwise, render license section
+  return ` 
   ## License
   ${renderLicenseBadge(license)}  
   This repo is covered under the ${license} license.  
@@ -52,74 +54,99 @@ function renderLicenseSection(license) {
   `;
 }
 
-const renderTableOfContents = licesne => {
-  if (licesne === "No license") {
+const renderTableOfContents = (licesne, tests) => { // Renders a ToC depending on if you have a license, testing info, both, or neither
+  if (licesne !== "No license" && tests) { // If have both license and testing 
     return `## Table of Contents
-   - [Installation](#installation)
-   - [Usage](#usage)
-   - [Contributing](#contributing)
-   - [Tests](#tests)
-   - [Questions](#questions)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [Tests](#tests)
+- [Questions](#questions)
+- [License](#license)
+     `;
+  }else if (licesne === "No license" && tests) {  // If only have testing
+    return `## Table of Contents
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [Tests](#tests)
+- [Questions](#questions)
     `
-  } else {
+  } else if (licesne !== "No license" && !tests) { // If only have license
     return `## Table of Contents
-   - [Installation](#installation)
-   - [Usage](#usage)
-   - [Contributing](#contributing)
-   - [Tests](#tests)
-   - [Questions](#questions)
-   - [License](#license)
-    `;
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [Questions](#questions)
+- [License](#license)
+     `;
+  } else { // If don't have either
+    return `## Table of Contents
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [Questions](#questions)
+     `;    
   }
 }
 
 const renderCommand = cmd => {
- if (!cmd) return ``;
+ if (!cmd) return ``; // If no command, omit entry
 
  return `\`\`\`${cmd}\`\`\``;
 }
 
 const renderPlaceholderImg = confirm => {
-  if (confirm) {
+  if (confirm) { // If user wants screenshot, add placeholder, else omit
     return `
-    <!--- Don't forget to change the path to your actual image path! --->
-    ![Screenshot](./placeholder.png)
+<!--- Don't forget to change the path to your actual image path! --->
+![Screenshot](./placeholder.png)
     `;
   } else {
     return ``;
   }
 }
 
-function generateMarkdown(data) {
+const renderTestSection = test => {
+  if (!test) {
+    return ``;
+  } else {
+    return `
+# Tests
+${test}
+    `
+  }
+}
+
+function generateMarkdown(data) { // generate readme with input
   return `
-  # ${data.title}
-  ${renderLicenseBadge(data.license)}
+# ${data.title}
+${renderLicenseBadge(data.license)}
 
-  ## Description
-  ${data.description}
+## Description
+${data.description}
 
-  ${renderTableOfContents(data.license)}
+${renderTableOfContents(data.license, data.tests)}
 
-  ## Installation
-  ${data.installation}  
-  ${renderCommand(data.installationCommand)}
+## Installation
+${data.installation}  
+${renderCommand(data.installationCommand)}
 
-  ## Usage 
-  ${data.usage}  
-  ${renderCommand(data.usageCommand)}
-  ${renderPlaceholderImg(data.confirmScreenshot)}
+## Usage 
+${data.usage}  
+${renderCommand(data.usageCommand)}
+${renderPlaceholderImg(data.confirmScreenshot)}
 
-  ## Contributing
-  ${data.contributing}
+## Contributing
+${data.contributing}
 
-  ## Tests
-  ${data.tests}
+${renderTestSection(data.tests)}
 
-  ## Questions
-  Please refer all questions about this repo to github user [@${data.username}](https://github.com/${data.username})  
-  A good email to reach this person at is: ${data.email}
+## Questions
+Please refer all questions about this repo to github user [@${data.username}](https://github.com/${data.username})  
+A good email to reach this person at is: ${data.email}
 
-  ${renderLicenseSection(data.license)}
+${renderLicenseSection(data.license)}
   `;
 }
 

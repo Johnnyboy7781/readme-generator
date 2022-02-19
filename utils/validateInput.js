@@ -1,5 +1,5 @@
 const checkEmail = email => {
-    let hasPeriod = false, hasAt = false;
+    let hasPeriod = false, hasAt = false; // Simple email validation, only checks if email has both '@' and '.'
 
     for (let i = 0; i < email.length; i++) {
         if (email[i] === ".") {
@@ -23,12 +23,9 @@ const checkEmail = email => {
     return false;
 }
 
-const validate = (inputToValidate, inputType = 'input') => {
-    if (inputType === 'screenshot') {
-        console.log(" || Don't forget to add the screenshot file later!");
-        return true;
-    } else if (inputType === 'email') {
-        return checkEmail(inputToValidate);
+const validate = (inputToValidate, inputType = 'input') => { // For most cases, simply validates that there is input
+    if (inputType === 'email') {
+        return checkEmail(inputToValidate); // For emails only, run extra validation to ensure valid email
     } else if (inputToValidate) {
         return true;
     } else {

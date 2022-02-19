@@ -1,9 +1,9 @@
-// TODO: Include packages needed for this application
 const fs = require('fs');
 const inquirer = require('inquirer');
 const validate = require('./utils/validateInput');
 const generateMarkdown = require('./utils/generateMarkdown');
 
+/* MOCK DATA FOR TESTING */
 // const mockData = {
 //     title: 'Run Buddy',
 //     description: 'A website where you can find people to run with.',
@@ -108,4 +108,12 @@ function init() {
     return inquirer.prompt(questions);
 }
 
-init().then(answers => writeToFile('README.md', answers));
+init()
+    .then(answers => writeToFile('README.md', answers))
+    .then(() => console.log(
+        '\n================================\n' +
+        '        README generated!\n' +
+        '    Check the dist directory\n' +
+        '       Have a great day! ;)\n' +
+        '================================\n'
+    ));
