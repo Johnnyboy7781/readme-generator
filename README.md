@@ -24,6 +24,8 @@
   Simply run the node command and start answering the provided questions! When finished, your ready-to-use readme will be located in the 'dist' folder  
   ```node index```
 
+  ![Screenshot](./screenshot.png)
+
   ## Contributing
   Simply fork the repo and make a PR and I will review it when I can.
 
