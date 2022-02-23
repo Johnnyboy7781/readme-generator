@@ -22,7 +22,9 @@
 
   ## Usage 
   Simply run the node command and start answering the provided questions! When finished, your ready-to-use readme will be located in the 'dist' folder  
-  ```node index```
+  ```node index```    
+    
+  Check out this video demo: https://www.youtube.com/watch?v=EzJDciGMvUg&ab_channel=JonathanMcDonnell
 
   ![Screenshot](./screenshot.png)
 
